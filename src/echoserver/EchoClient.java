@@ -23,20 +23,35 @@ public class EchoClient {
     }
 
     private void start(String server) throws IOException {
-        Thread input = new Thread(new KeyboardReader());
-        input.start();
-
         Socket socket = new Socket(server, PORT_NUMBER);
-
         InputStream socketInputStream = socket.getInputStream();
         OutputStream socketOutputStream = socket.getOutputStream();
+
+        Thread input = new Thread(new KeyboardReader(socketOutputStream));
+        Thread output = new Thread(new OutputWriter(socketInputStream));
+
+        output.start();
+        input.start();
+
+
+        try {
+            input.join();
+            output.join();
+        } catch (InterruptedException e) {
+            System.out.println("Interrupted Exception.");
+            System.exit(1);
+        }
+
+
+
+        /*
         int readByte;
         while ((readByte = System.in.read()) != -1) {
             socketOutputStream.write(readByte);
             int socketByte = socketInputStream.read();
             System.out.write(socketByte);
         }
-
+*/
         System.out.flush();
     }
 }
