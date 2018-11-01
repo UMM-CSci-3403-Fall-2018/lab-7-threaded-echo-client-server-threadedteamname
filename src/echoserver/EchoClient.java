@@ -6,23 +6,37 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 public class EchoClient {
-	public static final int PORT_NUMBER = 6013;
+    public static final int PORT_NUMBER = 6013;
 
-	public static void main(String[] args) throws IOException {
-		EchoClient client = new EchoClient();
-		client.start();
-	}
+    public static void main(String[] args) throws IOException {
+        EchoClient client = new EchoClient();
 
-	private void start() throws IOException {
-		Socket socket = new Socket("localhost", PORT_NUMBER);
-		InputStream socketInputStream = socket.getInputStream();
-		OutputStream socketOutputStream = socket.getOutputStream();
-		int readByte;
-		while ((readByte = System.in.read()) != -1) {
-			socketOutputStream.write(readByte);
-			int socketByte = socketInputStream.read();
-			System.out.write(socketByte);
-		}
-		System.out.flush();
-	}
+        String server;
+        // Use "127.0.0.1", i.e., localhost, if no server is specified.
+        if (args.length == 0) {
+            server = "127.0.0.1";
+        } else {
+            server = args[0];
+        }
+
+        client.start(server);
+    }
+
+    private void start(String server) throws IOException {
+        Thread input = new Thread(new KeyboardReader());
+        input.start();
+
+        Socket socket = new Socket(server, PORT_NUMBER);
+
+        InputStream socketInputStream = socket.getInputStream();
+        OutputStream socketOutputStream = socket.getOutputStream();
+        int readByte;
+        while ((readByte = System.in.read()) != -1) {
+            socketOutputStream.write(readByte);
+            int socketByte = socketInputStream.read();
+            System.out.write(socketByte);
+        }
+
+        System.out.flush();
+    }
 }

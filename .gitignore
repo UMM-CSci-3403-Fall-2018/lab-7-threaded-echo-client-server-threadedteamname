@@ -5,6 +5,8 @@
 # files in.
 test/tmp
 
+.idea
+
 # Ignore the tmp directory that Aruba creates and puts all of its test
 # files in.
 test/tmp
