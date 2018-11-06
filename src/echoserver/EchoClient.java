@@ -27,7 +27,7 @@ public class EchoClient {
         InputStream socketInputStream = socket.getInputStream();
         OutputStream socketOutputStream = socket.getOutputStream();
 
-        Thread input = new Thread(new KeyboardReader(socketOutputStream));
+        Thread input = new Thread(new KeyboardReader(socketOutputStream, socket));
         Thread output = new Thread(new OutputWriter(socketInputStream));
 
         output.start();
@@ -42,16 +42,6 @@ public class EchoClient {
             System.exit(1);
         }
 
-
-
-        /*
-        int readByte;
-        while ((readByte = System.in.read()) != -1) {
-            socketOutputStream.write(readByte);
-            int socketByte = socketInputStream.read();
-            System.out.write(socketByte);
-        }
-*/
         System.out.flush();
     }
 }
