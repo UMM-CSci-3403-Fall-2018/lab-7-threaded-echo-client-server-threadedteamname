@@ -16,14 +16,9 @@ public class EchoServer {
 
 	private void start() throws IOException, InterruptedException {
 		ServerSocket serverSocket = new ServerSocket(PORT_NUMBER);
-		while (true) {
-			Socket socket = serverSocket.accept();
-			InputStream inputStream = socket.getInputStream();
-			OutputStream outputStream = socket.getOutputStream();
-			int b;
-			while ((b = inputStream.read()) != -1) {
-				outputStream.write(b);
-			}
-		}
+		Socket socket = serverSocket.accept();
+
+        Thread input = new Thread(new HandleEcho(socket));
+		input.start();
 	}
 }
