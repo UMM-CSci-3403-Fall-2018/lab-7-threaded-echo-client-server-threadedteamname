@@ -18,9 +18,11 @@ public class HandleEcho implements Runnable {
             while (true) {
                 InputStream inputStream = socket.getInputStream();
                 OutputStream outputStream = socket.getOutputStream();
-                int b;
-                while ((b = inputStream.read()) != -1) {
-                    outputStream.write(b);
+                int socketByte;
+                // While there is more to read from the inputStream from the client
+                while ((socketByte = inputStream.read()) != -1) {
+                    // Write the data to the outputStream for the client
+                    outputStream.write(socketByte);
                 }
                 socket.shutdownOutput();
             }

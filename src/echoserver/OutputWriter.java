@@ -14,7 +14,9 @@ public class OutputWriter implements Runnable {
         int socketByte;
 
         try {
+            // While there is data to be read from the server
             while ((socketByte = socketInputStream.read()) != -1) {
+                // Write it out to the screen
                 System.out.write(socketByte);
             }
         } catch (IOException e) {

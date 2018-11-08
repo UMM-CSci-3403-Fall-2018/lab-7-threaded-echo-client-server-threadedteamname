@@ -17,7 +17,9 @@ public class KeyboardReader implements Runnable {
         int readByte;
 
         try {
+            // While there is additional data to be read from the keyboard
             while ((readByte = System.in.read()) != -1) {
+                // Write it to the outputStream for the server
                 socketOutputStream.write(readByte);
             }
             // Tells server there is nothing left to send

@@ -18,6 +18,7 @@ public class EchoServer {
 		ServerSocket serverSocket = new ServerSocket(PORT_NUMBER);
 		Socket socket = serverSocket.accept();
 
+		// For each socket, create a new thread
         Thread input = new Thread(new HandleEcho(socket));
 		input.start();
 	}

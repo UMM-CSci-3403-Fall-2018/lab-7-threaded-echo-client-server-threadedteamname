@@ -27,13 +27,15 @@ public class EchoClient {
         InputStream socketInputStream = socket.getInputStream();
         OutputStream socketOutputStream = socket.getOutputStream();
 
+        // Create input and output threads
         Thread input = new Thread(new KeyboardReader(socketOutputStream, socket));
         Thread output = new Thread(new OutputWriter(socketInputStream));
 
         output.start();
         input.start();
 
-
+        // Specifies that the threads should wait for each other to finish.
+        // try-catch is used to handle the exception which may be thrown but is not defined by Runnable
         try {
             input.join();
             output.join();
